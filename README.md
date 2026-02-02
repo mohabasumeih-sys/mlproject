@@ -7,14 +7,23 @@ Project Structure
 text
 .
 ├── Nootbook/            # Jupyter notebooks for EDA and experimentation
+
 │   └── Data/            # Raw / intermediate data files
+
 ├── src/                 # Core ML code (components, pipelines, utilities)
+
 ├── artifacts/           # Saved models, transformed data, and other artifacts
+
 ├── catboost_info/       # Logs and metadata from CatBoost training (if used)
+
 ├── templates/           # HTML templates for the web UI
+
 ├── application.py       # Application entry point (serves the model)
+
 ├── requirements.txt     # Python dependencies
+
 ├── setup.py             # Package configuration
+
 └── README.md
 Features
 Modular data ingestion and data transformation components inside src.
