@@ -1,9 +1,12 @@
 from flask import Flask, request, render_template
 import numpy as np
 import pandas as pd
-
 from sklearn.preprocessing import StandardScaler
-from src.pipeline.predict_pipeline import CustomData, PredictPipeline
+
+# Lazy import - only load when needed
+def get_predict_pipeline():
+    from src.pipeline.predict_pipeline import CustomData, PredictPipeline
+    return CustomData, PredictPipeline
 
 application = Flask(__name__)
 app = application
@@ -13,11 +16,17 @@ app = application
 def index():
     return render_template('index.html')
 
+@app.route('/health')
+def health():
+    return {'status': 'ok'}, 200
+
 @app.route('/predictdata', methods=['GET', 'POST'])
 def predict_datapoint():
     if request.method == 'GET':
         return render_template('home.html')
     else:
+        CustomData, PredictPipeline = get_predict_pipeline()
+        
         data = CustomData(
             gender=request.form.get('gender'),
             race_ethnicity=request.form.get('ethnicity'),
@@ -39,10 +48,5 @@ def predict_datapoint():
 
         return render_template('home.html', results=results[0])
 
-#if __name__ == "__main__":
-    #print("Starting Flask app...")
-  #  app.run(host="127.0.0.1", port=5001)
-
-if __name__ == '__main__':
-    application.run(host='0.0.0.0', port=5000)
-
+# DO NOT ADD: if __name__ == '__main__': application.run()
+# Gunicorn handles app execution on Elastic Beanstalk
